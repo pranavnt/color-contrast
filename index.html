@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Color Contrast Checker</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <style>
+      body {
+        background-image: url("backgroundImage.png");
+      }
+
+      #mainDiv {
+        background-color: #ff0d63;
+        position: absolute;
+        top: 140px;
+        width: 100%;
+        height: 400px;
+        border-radius: 10px;
+      }
+
+      #pageTitle {
+        color: white;
+        text-align: center;
+        font-size: 65px;
+        font-family: "Helvetica";
+        letter-spacing: 2px;
+      }
+
+      #enterURL {
+        color: white;
+        text-align: center;
+        font-size: 25px;
+        font-family: "Helvetica";
+        letter-spacing: 2px;
+      }
+
+      p {
+        margin: 0;
+      }
+
+      .textBoxColor {
+        height: 40px;
+        width: 250px;
+        border-radius: 20px;
+        text-align: center;
+        font-size: 24px;
+        border: 2px solid black;
+      }
+
+      .labelText {
+        color: white;
+        font-size: 25px;
+        font-family: "Helvetica";
+        letter-spacing: 2px;
+      }
+
+      #image-button {
+        background-color: #147efb;
+        border: 2px solid black;
+        height: 60px;
+        width: 60px;
+      }
+      .fa {
+        color: white !important;
+      }
+    </style>
+  </head>
+  <script>
+    function submitColors() {
+      const foregroundColor = document.getElementById("foregroundColor").value;
+      const backgroundColor = document.getElementById("backgroundColor").value;
+      checkContrast(foregroundColor, backgroundColor);
+    }
+
+    function checkContrast(foregroundColor, backgroundColor) {
+      //comvert string into rgb values
+      const startingString = "0x";
+      var colorContrastRatio;
+      ``;
+      var fgRed = parseInt(startingString + foregroundColor.substring(0, 2));
+      var fgGreen = parseInt(startingString + foregroundColor.substring(2, 4));
+      var fgBlue = parseInt(startingString + foregroundColor.substring(4, 6));
+      var bgRed = parseInt(startingString + backgroundColor.substring(0, 2));
+      var bgGreen = parseInt(startingString + backgroundColor.substring(2, 4));
+      var bgBlue = parseInt(startingString + backgroundColor.substring(4, 6));
+      var relativeLumFg = 0.2126 * fgGreen + 0.7152 * fgGreen + 0.0722 * fgBlue;
+      var relativeLumBg = 0.2126 * bgGreen + 0.7152 * bgGreen + 0.0722 * bgBlue;
+
+      if (relativeLumFg < relativeLumBg) {
+        colorContrastRatio =
+          Math.round((relativeLumBg / relativeLumFg) * 10) / 10;
+      } else {
+        colorContrastRatio =
+          Math.round((relativeLumFg / relativeLumBg) * 10) / 10;
+      }
+
+      if (colorContrastRatio < 4.3) {
+        alert(
+          "Color Scheme not accessible (ratio: " +
+            String(colorContrastRatio) +
+            ")"
+        );
+      } else {
+        alert(
+          "Color Scheme accessible! (ratio: " + String(colorContrastRatio) + ")"
+        );
+      }
+    }
+  </script>
+  <body>
+    <div id="mainDiv">
+      <b>
+        <br />
+        <br />
+        <p id="pageTitle">Color Contrast Checker</p>
+        <br />
+        <br />
+      </b>
+      <!!div style="position: absolute; left: 200px;">
+        <b>
+          <label class="labelText">Foreground:</label>
+        </b>
+        <input class="textBoxColor" type="text" id="foregroundColor" />
+        <button
+          onclick="submitColors()"
+          style="border-radius: 100%;"
+          id="image-button"
+          type="submit"
+          style="position: absolute;"
+        >
+          <i
+            class="fa fa-send fa-3x"
+            style="
+              position: relative;
+              right: 20px;
+              top: 5px;
+              width: 80px;
+              height: 80px;
+            "
+          ></i>
+        </button>
+        <br />
+        <br />
+        <b>
+          <label class="labelText">Background:</label>
+        </b>
+        <input class="textBoxColor" type="text" id="backgroundColor" />
+        <br />
+      </div>
+    </div>
+  </body>
+</html>
